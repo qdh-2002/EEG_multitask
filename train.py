@@ -10,6 +10,12 @@ from datasets.eeg_dataset_sleepedf import SleepEDFDataset
 from models.multitask_transformer import MultiTaskEEGNet
 from utils.metrics import multitask_loss
 
+from datasets.simulated_eeg_dataset import SimulatedEEGDataset
+
+dataset_epi = SimulatedEEGDataset(num_samples=300, num_classes=2)    # 癫痫
+dataset_emot = SimulatedEEGDataset(num_samples=300, num_classes=2)   # 情绪
+dataset_sleep = SimulatedEEGDataset(num_samples=300, num_classes=5)  # 睡眠阶段
+
 # 配置
 BATCH_SIZE = 16
 EPOCHS = 20
@@ -18,9 +24,9 @@ SEG_LEN = 256
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # 数据加载
-dataset_epi = CHBMITDataset("data/chbmit", segment_len=SEG_LEN)
-dataset_emot = DEAPDataset("data/deap/data_preprocessed.mat", segment_len=SEG_LEN)
-dataset_sleep = SleepEDFDataset("data/sleep_edf", segment_len=SEG_LEN)
+#dataset_epi = CHBMITDataset("data/chbmit", segment_len=SEG_LEN)
+#dataset_emot = DEAPDataset("data/deap/data_preprocessed.mat", segment_len=SEG_LEN)
+#dataset_sleep = SleepEDFDataset("data/sleep_edf", segment_len=SEG_LEN)
 
 # 为简单起见，这里用相同的DataLoader（你可分别训练或同步长度采样）
 train_loader = DataLoader(list(zip(dataset_epi, dataset_emot, dataset_sleep)), batch_size=BATCH_SIZE, shuffle=True)
